@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>Welcome to Feathers</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html, body {
+        font-family: 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
+        font-weight: 400;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .center-text {
+        text-align: center;
+      }
+
+      main {
+        margin-top: 100px;
+        padding: 20px;
+      }
+
+      img.logo {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        margin-bottom: 30px;
+      }
+
+      h2 {
+        font-size: 2em;
+        font-weight: 100;
+      }
+
+      footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+      }
+
+      footer p {
+        font-weight: 300;
+        font-size: 1.0em;
+      }
+
+      a {
+        color: #31D8A0;
+        text-decoration: none;
+      }
+
+      a:hover,
+      a:focus {
+        color: #31D8A0;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="">
+      <input type="text" name="text" id="text" placeholder="Type your message here">
+      <button type="button" id="btn_send">Send message</button>
+    </form>
+    <script src="//npmcdn.com/feathers-client@^1.1.0/dist/feathers.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script>
+      var socket = io()
+      var app = feathers()
+      app.configure(feathers.socketio(socket))
+      var messages = app.service('messages')
+      messages.on('created', function (data) {
+        console.log('A new message has been created', data)
+      })
+      var btnSend = document.getElementById('btn_send')
+      var txt = document.getElementById('text')
+      btnSend.addEventListener('click', function (e) {
+        messages.create({ text: txt.value })
+      })
+    </script>
+  </body>
+</html>
